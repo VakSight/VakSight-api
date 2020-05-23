@@ -1,5 +1,0 @@
-C:\Users\Vladislav\Desktop\VakSight\Service\Presentation\VakSight.API\bin\Debug\netstandard2.1\VakSight.API.deps.json
-C:\Users\Vladislav\Desktop\VakSight\Service\Presentation\VakSight.API\bin\Debug\netstandard2.1\VakSight.API.dll
-C:\Users\Vladislav\Desktop\VakSight\Service\Presentation\VakSight.API\obj\Debug\netstandard2.1\VakSight.API.csprojAssemblyReference.cache
-C:\Users\Vladislav\Desktop\VakSight\Service\Presentation\VakSight.API\obj\Debug\netstandard2.1\VakSight.API.AssemblyInfoInputs.cache
-C:\Users\Vladislav\Desktop\VakSight\Service\Presentation\VakSight.API\obj\Debug\netstandard2.1\VakSight.API.AssemblyInfo.cs

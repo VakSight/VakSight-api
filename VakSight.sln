@@ -13,19 +13,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccessLayer", "DataAcce
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{D6A17015-5D8A-4E4A-A5ED-1C0A8A281F16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VakSight.Host", "Host\VakSight.Host\VakSight.Host.csproj", "{E9A0F6AD-F65E-44FE-B77C-035D4EF8F822}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VakSight.Host", "Host\VakSight.Host\VakSight.Host.csproj", "{E9A0F6AD-F65E-44FE-B77C-035D4EF8F822}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VakSight.Repository.Contracts", "Service\DataAccessLayer\VakSight.Repository.Contracts\VakSight.Repository.Contracts.csproj", "{978E6FB2-26E9-4242-A8B5-8CDE17A03DF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VakSight.Repository.Contracts", "Service\DataAccessLayer\VakSight.Repository.Contracts\VakSight.Repository.Contracts.csproj", "{978E6FB2-26E9-4242-A8B5-8CDE17A03DF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VakSight.Repository.Implementation", "Service\DataAccessLayer\VakSight.Repository.Implementation\VakSight.Repository.Implementation.csproj", "{93737BD4-757A-4CE2-A93A-0AC83524BAD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VakSight.Repository.Implementation", "Service\DataAccessLayer\VakSight.Repository.Implementation\VakSight.Repository.Implementation.csproj", "{93737BD4-757A-4CE2-A93A-0AC83524BAD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VakSight.API", "Service\Presentation\VakSight.API\VakSight.API.csproj", "{8A0C4DB7-B89D-4CBE-A021-37008D42D596}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VakSight.API", "Service\Presentation\VakSight.API\VakSight.API.csproj", "{8A0C4DB7-B89D-4CBE-A021-37008D42D596}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VakSight.Entities", "Service\BusinessLayer\VakSight.Entities\VakSight.Entities.csproj", "{89D089E8-8731-4748-A9DB-25E27353FB68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VakSight.Entities", "Service\BusinessLayer\VakSight.Entities\VakSight.Entities.csproj", "{89D089E8-8731-4748-A9DB-25E27353FB68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VakSight.Service.Contracts", "Service\BusinessLayer\VakSight.Service.Contracts\VakSight.Service.Contracts.csproj", "{FEC51B56-B8EE-4603-8668-F1B910A40828}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VakSight.Service.Contracts", "Service\BusinessLayer\VakSight.Service.Contracts\VakSight.Service.Contracts.csproj", "{FEC51B56-B8EE-4603-8668-F1B910A40828}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VakSight.Service.Implementation", "Service\BusinessLayer\VakSight.Service.Implementation\VakSight.Service.Implementation.csproj", "{E5BA018A-F069-4630-AEC7-4DEFFD0D491D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VakSight.Service.Implementation", "Service\BusinessLayer\VakSight.Service.Implementation\VakSight.Service.Implementation.csproj", "{E5BA018A-F069-4630-AEC7-4DEFFD0D491D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{F4655126-C7EA-496C-8789-735A17EB702E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VakSight.Shared.Api", "Shared\VakSight.Shared.Api\VakSight.Shared.Api.csproj", "{3022FA1B-B003-44BB-9DD5-1B47E4A29A28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VakSight.Shared", "Shared\VakSight.Shared\VakSight.Shared.csproj", "{2A0817E3-87A8-467D-B721-D68F150655E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +67,14 @@ Global
 		{E5BA018A-F069-4630-AEC7-4DEFFD0D491D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5BA018A-F069-4630-AEC7-4DEFFD0D491D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5BA018A-F069-4630-AEC7-4DEFFD0D491D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3022FA1B-B003-44BB-9DD5-1B47E4A29A28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3022FA1B-B003-44BB-9DD5-1B47E4A29A28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3022FA1B-B003-44BB-9DD5-1B47E4A29A28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3022FA1B-B003-44BB-9DD5-1B47E4A29A28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A0817E3-87A8-467D-B721-D68F150655E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A0817E3-87A8-467D-B721-D68F150655E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A0817E3-87A8-467D-B721-D68F150655E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A0817E3-87A8-467D-B721-D68F150655E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +90,8 @@ Global
 		{89D089E8-8731-4748-A9DB-25E27353FB68} = {0F4C7F90-C782-4D8C-982F-AA0F4A15ADD5}
 		{FEC51B56-B8EE-4603-8668-F1B910A40828} = {0F4C7F90-C782-4D8C-982F-AA0F4A15ADD5}
 		{E5BA018A-F069-4630-AEC7-4DEFFD0D491D} = {0F4C7F90-C782-4D8C-982F-AA0F4A15ADD5}
+		{3022FA1B-B003-44BB-9DD5-1B47E4A29A28} = {F4655126-C7EA-496C-8789-735A17EB702E}
+		{2A0817E3-87A8-467D-B721-D68F150655E5} = {F4655126-C7EA-496C-8789-735A17EB702E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {68EE83F0-9A97-49FD-81E3-1A48299C7109}

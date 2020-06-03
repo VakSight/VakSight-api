@@ -4,4 +4,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\DataAccessLayer\VakSight.Repository.Contracts\VakSight.Repository.Contracts.csproj" />
+    <ProjectReference Include="..\VakSight.Service.Contracts\VakSight.Service.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

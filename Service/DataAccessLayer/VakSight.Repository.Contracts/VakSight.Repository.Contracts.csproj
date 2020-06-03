@@ -8,4 +8,8 @@
     <Folder Include="AccessObjects\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\BusinessLayer\VakSight.Entities\VakSight.Entities.csproj" />
+  </ItemGroup>
+
 </Project>

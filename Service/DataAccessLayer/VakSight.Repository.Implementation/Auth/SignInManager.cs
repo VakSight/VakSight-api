@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using VakSight.Repository.Implementation.DataAccessObjects;
+using VakSight.Shared.Helpers;
 
 namespace VakSight.Repository.Implementation.Auth
 {

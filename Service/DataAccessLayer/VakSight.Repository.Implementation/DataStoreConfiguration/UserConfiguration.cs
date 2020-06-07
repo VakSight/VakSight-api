@@ -52,10 +52,8 @@ namespace VakSight.Repository.Implementation.DataStoreConfiguration
                 new UserRecord()
                 {
                     Id = AuthConsts.Users.SuperAdministratorId,
-                    UserName = "FinSight.Test1@softbank.com",
-                    NormalizedUserName = "FINSIGHT.TEST1@SOFTBANK.COM",
-                    Email = "FinSight.Test1@softbank.com",
-                    NormalizedEmail = "FINSIGHT.TEST1@SOFTBANK.COM",
+                    Email = "test@gmail.com",
+                    NormalizedEmail = "TEST@GMAIL.COM",
                     EmailConfirmed = true,
                     SecurityStamp = "IRK5FK4GIYQPEVVYW6DTEUA2N6IIXJUC",
                     ConcurrencyStamp = "bfc5d27d-d08f-4957-b70c-5aa1bde4b420",

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Repository.Context;
 using Repository.Repositories;
+using System.Threading.Tasks;
 
 namespace Repository.UnitOfWork
 {
@@ -25,9 +26,9 @@ namespace Repository.UnitOfWork
         }
         public UserRepository Users { get; set; }
 
-        public void Save()
+        public async Task CommitAsync()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

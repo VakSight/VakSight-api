@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Models;
 using Repository.Context;
@@ -16,24 +16,21 @@ namespace Repository.Repositories
         {
             _dbSet = context.Users;
         }
-        public UserDTO GetUserById(int id)
+
+        public async Task<UserDTO> GetUserByIdAsync(int id)
         {
-            return _dbSet.Where(u => u.Id == id).Select(u => new UserDTO
+            return await _dbSet.Where(u => u.Id == null).Select(u => new UserDTO
             {
-                Id = u.Id,
-                Username = u.Username,
-                Name = u.Name
-            }).FirstOrDefault();
+                Email = u.Email,
+                Password = u.Password
+            }).FirstOrDefaultAsync();
         }
 
-        public IEnumerable<UserDTO> GetAll()
+        public async Task CreateUserAsync(UserDTO user)
         {
-            return _dbSet.Select(u => new UserDTO
-            {
-                Id = u.Id,
-                Username = u.Username,
-                Name = u.Name
-            }).ToList();
+            var newUser = new User { Email = user.Email, Password = user.Password };
+            await _dbSet.AddAsync(newUser);
         }
+
     }
 }

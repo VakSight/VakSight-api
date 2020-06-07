@@ -1,35 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Services;
+using Models;
+using Services.Interfaceses;
 
 namespace Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
-        // GET api/users
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get([FromServices] UserService userService)
-        {
-            return Ok(userService.GetUsers());
-        }
 
-        // GET api/users/<id>
-        [HttpGet("{id}")]
-        public ActionResult<string> Get([FromServices] UserService userService, int id)
+        private IUserService service;
+
+        public UsersController(IUserService service)
         {
-            return Ok(userService.GetUserById(id));
+            this.service = service;
         }
 
         // POST api/users
+        [AllowAnonymous]
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> CreateUser([FromBody]CreateUserModel model)
         {
+            var user = new UserDTO { Email = model.Email, Password = model.Password };
+            await service.CreateUserAsync(user);
 
+            return Ok();
         }
 
         // PUT api/users/<id>

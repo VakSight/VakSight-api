@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Models;
+using System.Threading.Tasks;
 
 namespace Services.Interfaceses
 {
-    class IUserService
+    public interface IUserService
     {
+        Task CreateUserAsync(UserDTO user);
     }
 }

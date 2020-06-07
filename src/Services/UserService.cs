@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Threading.Tasks;
 using Models;
 using Repository.UnitOfWork;
+using Services.Interfaceses;
 
 namespace Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private IUnitOfWork _unitOfWork;
 
@@ -14,14 +14,23 @@ namespace Services
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<UserDTO> GetUsers()
+        public async Task<UserDTO> GetUserByIdAsync(int id)
         {
-            return _unitOfWork.Users.GetAll();
+            return await _unitOfWork.Users.GetUserByIdAsync(id);
         }
 
-        public UserDTO GetUserById(int id)
+        public async Task CreateUserAsync(UserDTO model)
         {
-            return _unitOfWork.Users.GetUserById(id);
+            //model.Password = EncryptPassword(model.Password);
+            await _unitOfWork.Users.CreateUserAsync(model);
+            await _unitOfWork.CommitAsync();
+        }
+
+        private string EncryptPassword(string password)
+        {
+            byte[] data = System.Text.Encoding.ASCII.GetBytes(password);
+            data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
+            return System.Text.Encoding.ASCII.GetString(data);
         }
     }
 }

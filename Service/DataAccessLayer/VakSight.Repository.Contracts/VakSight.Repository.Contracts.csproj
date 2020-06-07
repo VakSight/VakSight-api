@@ -9,6 +9,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\VakSight.Shared.Api\VakSight.Shared.Api.csproj" />
     <ProjectReference Include="..\..\BusinessLayer\VakSight.Entities\VakSight.Entities.csproj" />
   </ItemGroup>
 

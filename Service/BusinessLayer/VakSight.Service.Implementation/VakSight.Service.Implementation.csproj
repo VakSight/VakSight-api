@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\DataAccessLayer\VakSight.Repository.Contracts\VakSight.Repository.Contracts.csproj" />
     <ProjectReference Include="..\VakSight.Service.Contracts\VakSight.Service.Contracts.csproj" />
   </ItemGroup>

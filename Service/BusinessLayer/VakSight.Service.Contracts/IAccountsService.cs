@@ -12,5 +12,7 @@ namespace VakSight.Service.Contracts
         Task<bool> LogoutAsync(CurrentUser currentUser);
 
         Task<BaseAccount> CreateAccountAsync(CurrentUser currentUser, CreateAccount account);
+
+        Task<bool> VerifyUserTokenAsync(string userId, string uniqPurposePart, string accessToken);
     }
 }

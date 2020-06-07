@@ -9,7 +9,7 @@ using VakSight.Repository.Implementation.DataAccessObjects;
 
 namespace VakSight.Repository.Implementation.Repositories
 {
-    public class AccountsRepository : IAccountRepository
+    public class AccountsRepository : BaseRepository, IAccountRepository
     {
         private readonly IMapper mapper;
 
@@ -17,7 +17,7 @@ namespace VakSight.Repository.Implementation.Repositories
         {
             var record = mapper.Map<UserRecord>(user);
 
-            var result = await SignInManager.UserManager.CreateAsync(record);
+            await SignInManager.UserManager.CreateAsync(record);
             return record.Id;
         }
 

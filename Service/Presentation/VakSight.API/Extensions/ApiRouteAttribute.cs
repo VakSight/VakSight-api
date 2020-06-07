@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using VakSight.Shared.Api;
 
 namespace VakSight.API.Extensions
 {

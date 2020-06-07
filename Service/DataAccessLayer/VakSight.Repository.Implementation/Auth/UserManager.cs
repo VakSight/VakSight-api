@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using VakSight.Repository.Implementation.DataAccessObjects;
 using VakSight.Repository.Implementation.DataStoreConfiguration;
+using VakSight.Shared.Helpers;
 
 namespace VakSight.Repository.Implementation.Auth
 {

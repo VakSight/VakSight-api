@@ -13,6 +13,8 @@
     <Compile Remove="Migrations\20200607182855_MakePKAutoIncement.Designer.cs" />
     <Compile Remove="Migrations\20200607183747_MakePKAutoIncement.cs" />
     <Compile Remove="Migrations\20200607183747_MakePKAutoIncement.Designer.cs" />
+    <Compile Remove="Migrations\20200609174333_AddPasswordHash.cs" />
+    <Compile Remove="Migrations\20200609174333_AddPasswordHash.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

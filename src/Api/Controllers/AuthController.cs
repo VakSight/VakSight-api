@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.Auth;
 using Services.Interfaceses;
+using System.Threading.Tasks;
 
 namespace Api.Controllers
 {
@@ -17,9 +19,9 @@ namespace Api.Controllers
         [HttpPost]
         [Route("token")]
         [AllowAnonymous]
-        public IActionResult Token(string username, string password)
+        public async Task<IActionResult> Token(LoginModel loginModel)
         {
-            string token = authService.BuildToken(username, password);
+            string token = await authService.BuildTokenAsync(loginModel);
             if (token == null) return Unauthorized();
             return Ok(token);
         }

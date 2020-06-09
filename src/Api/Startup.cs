@@ -21,6 +21,7 @@ using Repository.UnitOfWork;
 using Services;
 using Services.Auth;
 using Services.Interfaceses;
+using Services.MiddleWares;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Api
@@ -109,6 +110,8 @@ namespace Api
             });
 
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseAuthentication();
             app.UseMvc();

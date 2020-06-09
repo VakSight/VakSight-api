@@ -1,13 +1,10 @@
-﻿using System.Security.Claims;
+﻿using Models.Auth;
+using System.Threading.Tasks;
 
 namespace Services.Interfaceses
 {
     public interface IAuthService
     {
-        bool UserAndPasswordAreValid(string username, string password);
-
-        Claim[] GetUserClaims(string username);
-
-        string BuildToken(string username, string password);
+        Task<string> BuildTokenAsync(LoginModel loginModel);
     }
 }

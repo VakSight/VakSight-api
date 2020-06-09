@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using Models.Auth;
 using Repository.Context;
 using Repository.DatabaseModels;
 
@@ -17,20 +18,14 @@ namespace Repository.Repositories
             _dbSet = context.Users;
         }
 
-        public async Task<UserDTO> GetUserByIdAsync(int id)
+        public async Task CreateUserAsync(User user)
         {
-            return await _dbSet.Where(u => u.Id == null).Select(u => new UserDTO
-            {
-                Email = u.Email,
-                Password = u.Password
-            }).FirstOrDefaultAsync();
+            await _dbSet.AddAsync(user);
         }
 
-        public async Task CreateUserAsync(UserDTO user)
+        public async Task<User> GetUserAsync(string email)
         {
-            var newUser = new User { Email = user.Email, Password = user.Password };
-            await _dbSet.AddAsync(newUser);
+            return await _dbSet.Where(x => x.Email.ToLower() == email.ToLower()).FirstOrDefaultAsync();
         }
-
     }
 }

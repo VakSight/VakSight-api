@@ -1,6 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Models;
+using Models.Exceptions;
+using Repository.DatabaseModels;
 using Repository.UnitOfWork;
+using Services.Helpers;
 using Services.Interfaceses;
 
 namespace Services
@@ -14,23 +17,16 @@ namespace Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<UserDTO> GetUserByIdAsync(int id)
-        {
-            return await _unitOfWork.Users.GetUserByIdAsync(id);
-        }
-
         public async Task CreateUserAsync(UserDTO model)
         {
-            //model.Password = EncryptPassword(model.Password);
-            await _unitOfWork.Users.CreateUserAsync(model);
+            var userRecord = await _unitOfWork.Users.GetUserAsync(model.Email);
+            if(userRecord != null)
+            {
+                throw new BadRequestException("User with this email alredy exists");
+            }
+            var encodedPassword = PasswordHasher.EncodePasswordToBase64(model.Password);
+            await _unitOfWork.Users.CreateUserAsync(new User { Email = model.Email, Password = encodedPassword });
             await _unitOfWork.CommitAsync();
-        }
-
-        private string EncryptPassword(string password)
-        {
-            byte[] data = System.Text.Encoding.ASCII.GetBytes(password);
-            data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
-            return System.Text.Encoding.ASCII.GetString(data);
         }
     }
 }

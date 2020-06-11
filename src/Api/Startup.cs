@@ -40,6 +40,15 @@ namespace Api
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                    });
+            });
+
             var jwtConfig = new JwtConfig();
             Configuration.Bind(nameof(JwtConfig), jwtConfig);
             services.AddJwtAuthentication(jwtConfig);
@@ -105,15 +114,12 @@ namespace Api
             });
 
 
-            app.UseCors(builder => { 
-                builder.AllowAnyOrigin();
-            });
-
             app.UseHttpsRedirection();
 
             app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseAuthentication();
+            app.UseCors("AllowAllOrigins");
             app.UseMvc();
         }
     }

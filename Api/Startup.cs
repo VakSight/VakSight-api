@@ -76,8 +76,10 @@ namespace Api
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<UserRepository>();
+            services.AddTransient<SourceRepository>();
             services.AddTransient<UserService>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<ISourceService, SourceService>();
             services.AddTransient<IJwtTokenBuilder, JwtTokenBuilder>();
             services.AddTransient<IUserService, UserService>();
         }

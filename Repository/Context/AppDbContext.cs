@@ -7,6 +7,7 @@ namespace Repository.Context
     public class AppDbContext : DbContext
     {
         internal DbSet<User> Users { get; set; }
+        internal DbSet<SourceRecord> Sources { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -15,10 +16,10 @@ namespace Repository.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //TODO set relationships between tables
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            base.OnModelCreating(modelBuilder);
 
-            base.OnModelCreating(modelBuilder);            
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new SourceConfiguration());
         }
     }
 }

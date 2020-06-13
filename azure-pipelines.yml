@@ -1,4 +1,14 @@
 # ASP.NET Core
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1(2b1c5333-cd48-4d67-8486-0074191d91c1)'
+    appType: 'webApp'
+    WebAppName: 'vaksight-api'
+    deployToSlotOrASE: true
+    ResourceGroupName: 'VakSight'
+    SlotName: 'production'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
 # Build and test ASP.NET Core projects targeting .NET Core.
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core

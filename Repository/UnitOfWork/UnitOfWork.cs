@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Repository.Context;
+using Repository.Interfaces;
 using Repository.Repositories;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace Repository.UnitOfWork
         public static bool Migrated = false;
         private AppDbContext _context;
 
-        public UnitOfWork(AppDbContext context, UserRepository userRepository, SourceRepository sourceRepository)
+        public UnitOfWork(AppDbContext context, IUserRepository userRepository, SourceRepository sourceRepository)
         {
             _context = context;
             Users = userRepository;
@@ -23,8 +24,8 @@ namespace Repository.UnitOfWork
                 Migrated = true;
             }
         }
-        public UserRepository Users { get; set; }
-        public SourceRepository Sources { get; set; }
+        public virtual IUserRepository Users { get; set; }
+        public virtual SourceRepository Sources { get; set; }
 
         public async Task CommitAsync()
         {

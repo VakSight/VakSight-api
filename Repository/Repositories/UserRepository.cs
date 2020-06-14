@@ -1,15 +1,13 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Models;
-using Models.Auth;
 using Repository.Context;
 using Repository.DatabaseModels;
+using Repository.Interfaces;
 
 namespace Repository.Repositories
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private DbSet<User> _dbSet;
 

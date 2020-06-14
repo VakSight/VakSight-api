@@ -19,13 +19,11 @@ namespace Api.Controllers
         [HttpPost]
         [Route("token")]
         [AllowAnonymous]
-        public async Task<IActionResult> Token(LoginModel loginModel)
+        public async Task<IActionResult> GetToken(LoginModel loginModel)
         {
             string token = await authService.BuildTokenAsync(loginModel);
             if (token == null) return Unauthorized();
             return Ok(token);
         }
-        
-        
     }
 }

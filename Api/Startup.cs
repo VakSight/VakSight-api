@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Models.Auth;
 using Repository.Context;
+using Repository.Interfaces;
 using Repository.Repositories;
 using Repository.UnitOfWork;
 using Services;
@@ -75,7 +76,7 @@ namespace Api
             });
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<UserRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<SourceRepository>();
             services.AddTransient<UserService>();
             services.AddTransient<IAuthService, AuthService>();

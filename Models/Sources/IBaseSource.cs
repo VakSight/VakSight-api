@@ -5,10 +5,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Models.Sources
 {
-    public class BaseSource
+    public interface IBaseSource
     {
-        [Required]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public SourceTypes Type { get; set; }
+        SourceTypes Type { get; set; }
     }
 }

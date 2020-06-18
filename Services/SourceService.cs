@@ -14,24 +14,24 @@ namespace Services
     {
         private IUnitOfWork _unitOfWork;
 
-        private readonly Dictionary<SourceTypes, Func<BaseSource, Task<string>>> sourceFormaters;
+        private readonly Dictionary<SourceTypes, Func<IBaseSource, Task<string>>> sourceFormaters;
 
         public SourceService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
 
-            sourceFormaters = new Dictionary<SourceTypes, Func<BaseSource, Task<string>>>
+            sourceFormaters = new Dictionary<SourceTypes, Func<IBaseSource, Task<string>>>
             {
                 { SourceTypes.Electronic,  async x => await CreateElectronicSourceAsync(x) }
             };
         }
 
-        public async Task<string> CreateSourceAsync(BaseSource source)
+        public async Task<string> CreateSourceAsync(IBaseSource source)
         {
             return await sourceFormaters[source.Type](source);
         }
 
-        private async Task<string> CreateElectronicSourceAsync(BaseSource source)
+        private async Task<string> CreateElectronicSourceAsync(IBaseSource source)
         {
             var electronicSource = source as ElectronicSource;
             var publication = electronicSource.Publication == null ? string.Empty : $" // electronicSource.Publication";
@@ -42,7 +42,7 @@ namespace Services
             if (electronicSource.Authors != null && electronicSource.Authors.Any())
             {
                 var author = electronicSource.Authors.First();
-                firstAuthor = $"{author.FirstName} {author.LastName.Substring(0, 1).ToUpper()}. {author.Surname.Substring(0, 1).ToUpper()}. ";
+                firstAuthor = $"{author.LastName} {author.FirstName.Substring(0, 1).ToUpper()}. {author.FathersName.Substring(0, 1).ToUpper()}. ";
             }
             if(electronicSource.Authors?.Count > 1)
             {
@@ -64,7 +64,7 @@ namespace Services
 
             foreach(var author in authors)
             {
-                result += $"{author.Surname.Substring(0, 1).ToUpper()}. {author.LastName.Substring(0, 1).ToUpper()}. {author.FirstName}, ";
+                result += $"{author.FathersName.Substring(0, 1).ToUpper()}. {author.LastName.Substring(0, 1).ToUpper()}. {author.FirstName}, ";
             }
 
             return result;

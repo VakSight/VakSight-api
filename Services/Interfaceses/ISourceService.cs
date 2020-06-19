@@ -5,6 +5,6 @@ namespace Services.Interfaceses
 {
     public interface ISourceService
     {
-        Task<string> CreateSourceAsync(BaseSource source);
+        Task<string> CreateSourceAsync(IBaseSource source);
     }
 }

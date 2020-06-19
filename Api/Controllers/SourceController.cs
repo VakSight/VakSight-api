@@ -19,7 +19,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        [Route("electronic")]
+        [Route("api/electronic")]
         [AllowAnonymous]
         public async Task<IActionResult> CreateElectronicSource(ElectronicSource source)
         {

@@ -6,8 +6,8 @@ namespace Repository.Context
 {
     public class AppDbContext : DbContext
     {
-        internal DbSet<User> Users { get; set; }
-        internal DbSet<SourceRecord> Sources { get; set; }
+        internal virtual DbSet<User> Users { get; set; }
+        internal virtual DbSet<SourceRecord> Sources { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

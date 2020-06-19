@@ -5,7 +5,6 @@ using Repository.UnitOfWork;
 using Services.Interfaceses;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Services
@@ -14,16 +13,14 @@ namespace Services
     {
         private IUnitOfWork _unitOfWork;
 
-        private readonly Dictionary<SourceTypes, Func<BaseSource, Task<string>>> sourceFormaters;
+        private readonly Dictionary<SourceTypes, Func<IBaseSource, Task<string>>> sourceFormaters;
         private readonly Dictionary<PublicationNumberTypes, string> shortPublicationTypes;
-
-        
 
         public SourceService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             
-            sourceFormaters = new Dictionary<SourceTypes, Func<BaseSource, Task<string>>>
+            sourceFormaters = new Dictionary<SourceTypes, Func<IBaseSource, Task<string>>>
             {
                 { SourceTypes.Electronic,  async x => await CreateElectronicSourceAsync(x) },
                 {SourceTypes.Book, async x => await CreateBookSourceAsync(x) }
@@ -38,30 +35,18 @@ namespace Services
             };
         }
 
-        public async Task<string> CreateSourceAsync(BaseSource source)
+        public async Task<string> CreateSourceAsync(IBaseSource source)
         {
             return await sourceFormaters[source.Type](source);
         }
 
-        private async Task<string> CreateElectronicSourceAsync(BaseSource source)
+        private async Task<string> CreateElectronicSourceAsync(IBaseSource source)
         {
             var electronicSource = source as ElectronicSource;
             var publication = electronicSource.Publication == null ? string.Empty : $" // electronicSource.Publication";
             var yearOfPulication = electronicSource.YearOfPublication == null ? string.Empty : $". – {electronicSource.YearOfPublication}.";
-            string firstAuthor = string.Empty;
-            string authors = string.Empty;
 
-            if (electronicSource.Authors != null && electronicSource.Authors.Any())
-            {
-                var author = electronicSource.Authors.First();
-                firstAuthor = $"{author.FirstName} {author.LastName.Substring(0, 1).ToUpper()}. {author.Surname.Substring(0, 1).ToUpper()}. ";
-            }
-            if(electronicSource.Authors?.Count > 1)
-            {
-                authors = ParseAuthors(electronicSource.Authors);
-            }
-
-            var content = $"{firstAuthor}{electronicSource.JobName} [Електронний ресурс]{authors}{publication}{yearOfPulication}" +
+            var content = $"{electronicSource.ParseAuthor()}{electronicSource.WorkName} [Електронний ресурс]{electronicSource.ParseAllAuthors()}{publication}{yearOfPulication}" +
                 $" – Режим доступу до ресурсу: {electronicSource.LinkToSource}";
 
             var newSource = new SourceRecord { Content = content, Type = electronicSource.Type, Authors = electronicSource.Authors };
@@ -69,30 +54,13 @@ namespace Services
 
             return content;
         }
-        private async Task<string> CreateBookSourceAsync(BaseSource source)
+
+        private async Task<string> CreateBookSourceAsync(IBaseSource source)
         {
             var bookSource = source as BookSource;
-            string firstAuthor = string.Empty;
-            string authors = string.Empty;
-            
-            
-            
-            if (bookSource.Authors != null && bookSource.Authors.Any())
-            {
-                
-                var author = bookSource.Authors.First();
-                authors = $" {author.FirstName} {author.LastName} {author.Surname}";
 
-                firstAuthor = $"{author.FirstName} {author.LastName.Substring(0, 1).ToUpper()}. {author.Surname.Substring(0, 1).ToUpper()}. ";
-            
-            }
-            if (bookSource.Authors?.Count > 1)
-            {
-                authors = ParseAuthors(bookSource.Authors);
-                
-            }
-            var content = $"{firstAuthor} {bookSource.WorkName} /" + 
-                $" {authors}. – {bookSource.PlaceOfPublication}: " +
+            var content = $"{bookSource.ParseAuthor()} {bookSource.WorkName} /" + 
+                $" {bookSource.ParseAllAuthors()}. – {bookSource.PlaceOfPublication}: " +
                 $"{bookSource.PublishingHouse}, {bookSource.YearOfPublication}." +
                 $" – {bookSource.NumberOfPages} c. – ({bookSource.PublishingName}). – " +
                 $"({bookSource.Series}; {shortPublicationTypes[bookSource.PublicationNumberType]} {bookSource.PeriodicSelectionNumber})";
@@ -100,16 +68,5 @@ namespace Services
             return content;
         }
 
-        private string ParseAuthors(List<Author> authors)
-        {
-            var result = " / ";
-
-            foreach(var author in authors)
-            {
-                result += $"{author.Surname.Substring(0, 1).ToUpper()}. {author.LastName.Substring(0, 1).ToUpper()}. {author.FirstName}, ";
-            }
-
-            return result;
-        }
     }
 }

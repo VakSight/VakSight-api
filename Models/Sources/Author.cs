@@ -9,6 +9,6 @@ namespace Models.Sources
 
         public string LastName { get; set; }
 
-        public string Surname { get; set; }
+        public string FathersName { get; set; }
     }
 }

@@ -1,18 +1,12 @@
 ﻿using Models.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace Models.Sources
 {
     public class BookSource : BaseSource
     {
-        [Required]
-        public string WorkName { get; set; }
-        
         public string PlaceOfPublication { get; set; }
 
         public string PublishingHouse { get; set; }
@@ -27,9 +21,11 @@ namespace Models.Sources
 
         public int? PeriodicSelectionNumber { get; set; }
         
+        [Required]
         [JsonConverter(typeof(StringEnumConverter))]
         public PublicationNumberTypes PublicationNumberType { get; set; }
 
-        public List<Author> Authors { get; set; }
+        [JsonIgnore]
+        public override SourceTypes Type { get; set; } = SourceTypes.Book;
     }
 }

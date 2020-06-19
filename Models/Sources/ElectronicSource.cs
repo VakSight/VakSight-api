@@ -16,5 +16,7 @@ namespace Models.Sources
         public string LinkToSource { get; set; }
 
         public List<Author> Authors { get; set; }
+
     }
+    
 }

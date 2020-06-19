@@ -15,14 +15,26 @@ namespace Services
         private IUnitOfWork _unitOfWork;
 
         private readonly Dictionary<SourceTypes, Func<BaseSource, Task<string>>> sourceFormaters;
+        private readonly Dictionary<PublicationNumberTypes, string> shortPublicationTypes;
+
+        
 
         public SourceService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-
+            
             sourceFormaters = new Dictionary<SourceTypes, Func<BaseSource, Task<string>>>
             {
-                { SourceTypes.Electronic,  async x => await CreateElectronicSourceAsync(x) }
+                { SourceTypes.Electronic,  async x => await CreateElectronicSourceAsync(x) },
+                {SourceTypes.Book, async x => await CreateBookSourceAsync(x) }
+            };
+
+            shortPublicationTypes = new Dictionary<PublicationNumberTypes, string>
+            {
+                {PublicationNumberTypes.Book, "кн." },
+                {PublicationNumberTypes.Edition, "вип." },
+                {PublicationNumberTypes.Number, "вип." },
+                {PublicationNumberTypes.Volume, "№" }
             };
         }
 
@@ -54,6 +66,36 @@ namespace Services
 
             var newSource = new SourceRecord { Content = content, Type = electronicSource.Type, Authors = electronicSource.Authors };
             //await _unitOfWork.Sources.CreateSourceAsync(newSource);
+
+            return content;
+        }
+        private async Task<string> CreateBookSourceAsync(BaseSource source)
+        {
+            var bookSource = source as BookSource;
+            string firstAuthor = string.Empty;
+            string authors = string.Empty;
+            
+            
+            
+            if (bookSource.Authors != null && bookSource.Authors.Any())
+            {
+                
+                var author = bookSource.Authors.First();
+                authors = $" {author.FirstName} {author.LastName} {author.Surname}";
+
+                firstAuthor = $"{author.FirstName} {author.LastName.Substring(0, 1).ToUpper()}. {author.Surname.Substring(0, 1).ToUpper()}. ";
+            
+            }
+            if (bookSource.Authors?.Count > 1)
+            {
+                authors = ParseAuthors(bookSource.Authors);
+                
+            }
+            var content = $"{firstAuthor} {bookSource.WorkName} /" + 
+                $" {authors}. – {bookSource.PlaceOfPublication}: " +
+                $"{bookSource.PublishingHouse}, {bookSource.YearOfPublication}." +
+                $" – {bookSource.NumberOfPages} c. – ({bookSource.PublishingName}). – " +
+                $"({bookSource.Series}; {shortPublicationTypes[bookSource.PublicationNumberType]} {bookSource.PeriodicSelectionNumber})";
 
             return content;
         }

@@ -26,6 +26,17 @@ namespace Api.Controllers
             var content = await sourceService.CreateSourceAsync(source);
             return Ok(content);
         }
+       
+        [HttpPost]
+        [Route("book")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateBookSource(BookSource source)
+        {
+            var content = await sourceService.CreateSourceAsync(source);
+            return Ok(content);
+        }
+
+
 
 
     }

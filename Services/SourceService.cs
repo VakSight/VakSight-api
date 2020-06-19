@@ -23,7 +23,8 @@ namespace Services
             sourceFormaters = new Dictionary<SourceTypes, Func<IBaseSource, Task<string>>>
             {
                 { SourceTypes.Electronic,  async x => await CreateElectronicSourceAsync(x) },
-                {SourceTypes.Book, async x => await CreateBookSourceAsync(x) }
+                { SourceTypes.Book, async x => await CreateBookSourceAsync(x) },
+                { SourceTypes.Periodical, async x => await CreatePeriodicalSourceAsync(x) }
             };
 
             shortPublicationTypes = new Dictionary<PublicationNumberTypes, string>
@@ -64,6 +65,24 @@ namespace Services
                 $"{bookSource.PublishingHouse}, {bookSource.YearOfPublication}." +
                 $" – {bookSource.NumberOfPages} c. – ({bookSource.PublishingName}). – " +
                 $"({bookSource.Series}; {shortPublicationTypes[bookSource.PublicationNumberType]} {bookSource.PeriodicSelectionNumber})";
+
+            return content;
+        }
+
+        private async Task<string> CreatePeriodicalSourceAsync(IBaseSource source)
+        {
+            var periodicalSource = source as PeriodicalSource;
+
+            var publication = periodicalSource.Publication == null ? string.Empty : $" // electronicSource.Publication";
+            var yearOfPulication = periodicalSource.YearOfPublication == null ? string.Empty : $". – {periodicalSource.YearOfPublication}.";
+            var periodicSelectionNumber = periodicalSource.PeriodicSelectionNumber == null ? string.Empty : $" – №{periodicalSource.PeriodicSelectionNumber}.";
+            var pages = periodicalSource.Pages == null ? string.Empty : $" – C. {periodicalSource.Pages}.";
+
+            var content = $"{periodicalSource.ParseAuthor()}{periodicalSource.WorkName}{periodicalSource.ParseAllAuthors()}{publication}{yearOfPulication}" +
+                $"{periodicSelectionNumber}{pages}";
+
+            var newSource = new SourceRecord { Content = content, Type = periodicalSource.Type, Authors = periodicalSource.Authors };
+            //await _unitOfWork.Sources.CreateSourceAsync(newSource);
 
             return content;
         }

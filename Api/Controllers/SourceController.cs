@@ -28,7 +28,7 @@ namespace Api.Controllers
         }
        
         [HttpPost]
-        [Route("book")]
+        [Route("api/book")]
         [AllowAnonymous]
         public async Task<IActionResult> CreateBookSource(BookSource source)
         {
@@ -36,8 +36,13 @@ namespace Api.Controllers
             return Ok(content);
         }
 
-
-
-
+        [HttpPost]
+        [Route("api/periodical")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CreatePeriodicalSource(PeriodicalSource source)
+        {
+            var content = await sourceService.CreateSourceAsync(source);
+            return Ok(content);
+        }
     }
 }

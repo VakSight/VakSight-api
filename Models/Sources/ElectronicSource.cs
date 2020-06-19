@@ -1,14 +1,11 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Models.Enums;
+using Newtonsoft.Json;
 
 namespace Models.Sources
 {
-    public class ElectronicSource : IBaseSource
+    public class ElectronicSource : BaseSource
     {
-        [Required]
-        public string JobName { get; set; }
-
         public int? YearOfPublication { get; set; }
 
         public string Publication { get; set; }
@@ -16,8 +13,7 @@ namespace Models.Sources
         [Required]
         public string LinkToSource { get; set; }
 
-        public List<Author> Authors { get; set; }
-
-        public SourceTypes Type { get; set; } = SourceTypes.Electronic;
+        [JsonIgnore]
+        public override SourceTypes Type { get; set; } = SourceTypes.Electronic;
     }
 }

@@ -36,38 +36,14 @@ namespace Services
             var electronicSource = source as ElectronicSource;
             var publication = electronicSource.Publication == null ? string.Empty : $" // electronicSource.Publication";
             var yearOfPulication = electronicSource.YearOfPublication == null ? string.Empty : $". – {electronicSource.YearOfPublication}.";
-            string firstAuthor = string.Empty;
-            string authors = string.Empty;
 
-            if (electronicSource.Authors != null && electronicSource.Authors.Any())
-            {
-                var author = electronicSource.Authors.First();
-                firstAuthor = $"{author.LastName} {author.FirstName.Substring(0, 1).ToUpper()}. {author.FathersName.Substring(0, 1).ToUpper()}. ";
-            }
-            if(electronicSource.Authors?.Count > 1)
-            {
-                authors = ParseAuthors(electronicSource.Authors);
-            }
-
-            var content = $"{firstAuthor}{electronicSource.JobName} [Електронний ресурс]{authors}{publication}{yearOfPulication}" +
+            var content = $"{electronicSource.ParseAuthor()}{electronicSource.WorkName} [Електронний ресурс]{electronicSource.ParseAllAuthors()}{publication}{yearOfPulication}" +
                 $" – Режим доступу до ресурсу: {electronicSource.LinkToSource}";
 
             var newSource = new SourceRecord { Content = content, Type = electronicSource.Type, Authors = electronicSource.Authors };
             //await _unitOfWork.Sources.CreateSourceAsync(newSource);
 
             return content;
-        }
-
-        private string ParseAuthors(List<Author> authors)
-        {
-            var result = " / ";
-
-            foreach(var author in authors)
-            {
-                result += $"{author.FathersName.Substring(0, 1).ToUpper()}. {author.LastName.Substring(0, 1).ToUpper()}. {author.FirstName}, ";
-            }
-
-            return result;
         }
     }
 }

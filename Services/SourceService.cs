@@ -5,7 +5,6 @@ using Repository.UnitOfWork;
 using Services.Interfaceses;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Services
@@ -15,14 +14,24 @@ namespace Services
         private IUnitOfWork _unitOfWork;
 
         private readonly Dictionary<SourceTypes, Func<IBaseSource, Task<string>>> sourceFormaters;
+        private readonly Dictionary<PublicationNumberTypes, string> shortPublicationTypes;
 
         public SourceService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-
+            
             sourceFormaters = new Dictionary<SourceTypes, Func<IBaseSource, Task<string>>>
             {
-                { SourceTypes.Electronic,  async x => await CreateElectronicSourceAsync(x) }
+                { SourceTypes.Electronic,  async x => await CreateElectronicSourceAsync(x) },
+                {SourceTypes.Book, async x => await CreateBookSourceAsync(x) }
+            };
+
+            shortPublicationTypes = new Dictionary<PublicationNumberTypes, string>
+            {
+                {PublicationNumberTypes.Book, "кн." },
+                {PublicationNumberTypes.Edition, "вип." },
+                {PublicationNumberTypes.Number, "вип." },
+                {PublicationNumberTypes.Volume, "№" }
             };
         }
 
@@ -45,5 +54,19 @@ namespace Services
 
             return content;
         }
+
+        private async Task<string> CreateBookSourceAsync(IBaseSource source)
+        {
+            var bookSource = source as BookSource;
+
+            var content = $"{bookSource.ParseAuthor()} {bookSource.WorkName} /" + 
+                $" {bookSource.ParseAllAuthors()}. – {bookSource.PlaceOfPublication}: " +
+                $"{bookSource.PublishingHouse}, {bookSource.YearOfPublication}." +
+                $" – {bookSource.NumberOfPages} c. – ({bookSource.PublishingName}). – " +
+                $"({bookSource.Series}; {shortPublicationTypes[bookSource.PublicationNumberType]} {bookSource.PeriodicSelectionNumber})";
+
+            return content;
+        }
+
     }
 }

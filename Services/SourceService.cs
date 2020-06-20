@@ -1,6 +1,7 @@
 ﻿using Models.Consts;
 using Models.Enums;
 using Models.Exceptions;
+using Models.Shared;
 using Models.Sources;
 using Repository.DatabaseModels;
 using Repository.UnitOfWork;
@@ -16,20 +17,20 @@ namespace Services
     {
         private IUnitOfWork _unitOfWork;
 
-        private readonly Dictionary<SourceTypes, Func<IBaseSource, Task<string>>> sourceFormaters;
+        private readonly Dictionary<SourceTypes, Func<IBaseSource, string, Task<string>>> sourceFormaters;
         private readonly Dictionary<PublicationNumberTypes, string> shortPublicationTypes;
 
         public SourceService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             
-            sourceFormaters = new Dictionary<SourceTypes, Func<IBaseSource, Task<string>>>
+            sourceFormaters = new Dictionary<SourceTypes, Func<IBaseSource, string, Task<string>>>
             {
-                { SourceTypes.Electronic,  async x => await CreateElectronicSourceAsync(x) },
-                { SourceTypes.Book, async x => await CreateBookSourceAsync(x) },
-                { SourceTypes.Periodical, async x => await CreatePeriodicalSourceAsync(x) },
-                { SourceTypes.Dissertation, async x => await CreateDissertationSourceAsync(x as DissertationSource) },
-                { SourceTypes.AbstractOfDissertation, async x => await CreateDissertationSourceAsync(x as AbstractDissertationSource) }
+                { SourceTypes.Electronic,  async (x, email) => await CreateElectronicSourceAsync(x, email) },
+                { SourceTypes.Book, async (x, email) => await CreateBookSourceAsync(x, email) },
+                { SourceTypes.Periodical, async (x, email) => await CreatePeriodicalSourceAsync(x, email) },
+                { SourceTypes.Dissertation, async (x, email) => await CreateDissertationSourceAsync(x as DissertationSource, email) },
+                { SourceTypes.AbstractOfDissertation, async (x, email) => await CreateDissertationSourceAsync(x as AbstractDissertationSource, email) }
             };
 
             shortPublicationTypes = new Dictionary<PublicationNumberTypes, string>
@@ -41,12 +42,12 @@ namespace Services
             };
         }
 
-        public async Task<string> CreateSourceAsync(IBaseSource source)
+        public async Task<string> CreateSourceAsync(IBaseSource source, string userEmail = null)
         {
-            return await sourceFormaters[source.Type](source);
+            return await sourceFormaters[source.Type](source, userEmail);
         }
 
-        private async Task<string> CreateElectronicSourceAsync(IBaseSource source)
+        private async Task<string> CreateElectronicSourceAsync(IBaseSource source, string userEmail = null)
         {
             var electronicSource = source as ElectronicSource;
             var publication = electronicSource.Publication == null ? string.Empty : $" // {electronicSource.Publication}";
@@ -55,13 +56,17 @@ namespace Services
             var content = $"{electronicSource.ParseAuthor()}{electronicSource.WorkName} [Електронний ресурс]{electronicSource.ParseAllAuthors()}{publication}{yearOfPulication}" +
                 $" – Режим доступу до ресурсу: {electronicSource.LinkToSource}";
 
-            var newSource = new SourceRecord { Content = content, Type = electronicSource.Type, Authors = electronicSource.Authors };
-            //await _unitOfWork.Sources.CreateSourceAsync(newSource);
+            var newSource = new SourceRecord { Content = content, Type = electronicSource.Type };
+
+            if(!string.IsNullOrEmpty(userEmail))
+            {
+                await SaveSourceAsync(newSource, userEmail);
+            }
 
             return content;
         }
 
-        private async Task<string> CreateBookSourceAsync(IBaseSource source)
+        private async Task<string> CreateBookSourceAsync(IBaseSource source, string userEmail = null)
         {
             var bookSource = source as BookSource;
 
@@ -71,10 +76,17 @@ namespace Services
                 $" – {bookSource.NumberOfPages} c. – ({bookSource.PublishingName}). – " +
                 $"({bookSource.Series}; {shortPublicationTypes[bookSource.PublicationNumberType]} {bookSource.PeriodicSelectionNumber})";
 
+            var newSource = new SourceRecord { Content = content, Type = bookSource.Type };
+
+            if (!string.IsNullOrEmpty(userEmail))
+            {
+                await SaveSourceAsync(newSource, userEmail);
+            }
+
             return content;
         }
 
-        private async Task<string> CreatePeriodicalSourceAsync(IBaseSource source)
+        private async Task<string> CreatePeriodicalSourceAsync(IBaseSource source, string userEmail = null)
         {
             var periodicalSource = source as PeriodicalSource;
 
@@ -86,13 +98,16 @@ namespace Services
             var content = $"{periodicalSource.ParseAuthor()}{periodicalSource.WorkName}{periodicalSource.ParseAllAuthors()}{publication}{yearOfPulication}" +
                 $"{periodicSelectionNumber}{pages}";
 
-            var newSource = new SourceRecord { Content = content, Type = periodicalSource.Type, Authors = periodicalSource.Authors };
-            //await _unitOfWork.Sources.CreateSourceAsync(newSource);
+            var newSource = new SourceRecord { Content = content, Type = periodicalSource.Type };
+            if (!string.IsNullOrEmpty(userEmail))
+            {
+                await SaveSourceAsync(newSource, userEmail);
+            }
 
             return content;
         }
 
-        private async Task<string> CreateDissertationSourceAsync(DissertationSource source)
+        private async Task<string> CreateDissertationSourceAsync(DissertationSource source, string userEmail = null)
         {
             var dissertationSource = source as DissertationSource;
 
@@ -105,13 +120,16 @@ namespace Services
             var content = $"{dissertationSource.ParseAuthor()}{dissertationSource.WorkName}{dissertationSource.GetScientificDegree()}{dissertationSource.GetSpecialty()}" +
                 $"{dissertationSource.ParseAllAuthors()}{placeOfPublication}{yearOfPublication}{numberOfPages}.";
 
-            var newSource = new SourceRecord { Content = content, Type = dissertationSource.Type, Authors = dissertationSource.Authors };
-            //await _unitOfWork.Sources.CreateSourceAsync(newSource);
+            var newSource = new SourceRecord { Content = content, Type = dissertationSource.Type };
+            if (!string.IsNullOrEmpty(userEmail))
+            {
+                await SaveSourceAsync(newSource, userEmail);
+            }
 
             return content;
         }
 
-        private void ValidateDissertationSource(DissertationSource source)
+        private void ValidateDissertationSource(DissertationSource source, string userEmail = null)
         {
             if(!string.IsNullOrEmpty(source.ScientificDegreeName) && !ScientificDegrees.ScientificDegreeNames.Keys.Contains(source.ScientificDegreeName))
             {
@@ -121,6 +139,25 @@ namespace Services
             {
                 throw new BadRequestException("Invalid scientific degree specialty!");
             }
+        }
+
+        private async Task SaveSourceAsync(SourceRecord sourceRecord, string userEmail)
+        {
+            var user = await _unitOfWork.Users.GetUserAsync(userEmail);
+
+            if(user is null)
+            {
+                throw new NotFoundException($"Cant find user by email: {userEmail}");
+            }
+
+            sourceRecord.User = user;
+            await _unitOfWork.Sources.CreateSourceAsync(sourceRecord);
+            await _unitOfWork.CommitAsync();
+        }
+
+        public async Task<PagedResult<SourceRecord>> GetSourceAsync(GetListQuery query, string userEmail)
+        {
+            return await _unitOfWork.Sources.GetSourcesAsync(query, userEmail);
         }
     }
 }

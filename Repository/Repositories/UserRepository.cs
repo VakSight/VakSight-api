@@ -7,7 +7,7 @@ using Repository.Interfaces;
 
 namespace Repository.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : BaseRepository, IUserRepository
     {
         private DbSet<User> _dbSet;
 
@@ -23,7 +23,8 @@ namespace Repository.Repositories
 
         public async Task<User> GetUserAsync(string email)
         {
-            return await _dbSet.Where(x => x.Email.ToLower() == email.ToLower()).FirstOrDefaultAsync();
+            var result = await _dbSet.Where(x => x.Email.ToLower() == email.ToLower()).FirstOrDefaultAsync();
+            return result;
         }
     }
 }

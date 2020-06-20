@@ -1,8 +1,6 @@
 ﻿using Models.Enums;
-using Models.Sources;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json.Converters;
 
 namespace Repository.DatabaseModels
 {
@@ -12,25 +10,13 @@ namespace Repository.DatabaseModels
 
         public string Content { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public SourceTypes Type { get; set; }
 
-        private string _authors { get; set; }
-
-        [NotMapped]
-        public List<Author> Authors
-        { 
-            get 
-            {
-                return JsonConvert.DeserializeObject<List<Author>>(_authors);
-            }
-            set
-            {
-                _authors = JsonConvert.SerializeObject(value);
-            }
-        }
-
+        [JsonIgnore]
         public int UserId { get; set; }
 
+        [JsonIgnore]
         public User User { get; set; }
     }
 }

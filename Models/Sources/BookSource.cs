@@ -1,7 +1,6 @@
 ﻿using Models.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.ComponentModel.DataAnnotations;
 
 namespace Models.Sources
 {
@@ -21,7 +20,6 @@ namespace Models.Sources
 
         public int? PeriodicSelectionNumber { get; set; }
         
-        [Required]
         [JsonConverter(typeof(StringEnumConverter))]
         public PublicationNumberTypes PublicationNumberType { get; set; }
 

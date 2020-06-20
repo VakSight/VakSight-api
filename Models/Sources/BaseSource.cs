@@ -23,7 +23,7 @@ namespace Models.Sources
             }
             var author = Authors.First();
 
-            return $"{author.LastName} {author.FirstName.Substring(0, 1).ToUpper()}. {author.FathersName.Substring(0, 1).ToUpper()}. ";
+            return $"{author?.LastName} {author.FirstName?.Substring(0, 1).ToUpper()}. {author.FathersName?.Substring(0, 1).ToUpper()}. ";
         }
 
         public string ParseAllAuthors()
@@ -36,7 +36,7 @@ namespace Models.Sources
             if(Authors.Count == 1)
             {
                 var author = Authors.First();
-                return $" / {author.LastName} {author.FirstName} {author.FathersName}";
+                return $" / {author?.LastName} {author?.FirstName} {author?.FathersName}";
             }
 
             var result = " / ";
@@ -44,11 +44,11 @@ namespace Models.Sources
             for(int i = 0; i < Authors.Count - 1; i++)
             {
                 var author = Authors[i];
-                result += $"{author.FirstName.Substring(0, 1).ToUpper()}. {author.FathersName.Substring(0, 1).ToUpper()}. {author.LastName}, ";
+                result += $"{author.FirstName?.Substring(0, 1).ToUpper()}. {author.FathersName?.Substring(0, 1).ToUpper()}. {author.LastName}, ";
             }
 
             var lastAuthor = Authors.Last();
-            result += $"{lastAuthor.FirstName.Substring(0, 1).ToUpper()}. {lastAuthor.FathersName.Substring(0, 1).ToUpper()}. {lastAuthor.LastName}";
+            result += $"{lastAuthor.FirstName?.Substring(0, 1).ToUpper()}. {lastAuthor.FathersName?.Substring(0, 1).ToUpper()}. {lastAuthor.LastName}";
 
             return result;
         }

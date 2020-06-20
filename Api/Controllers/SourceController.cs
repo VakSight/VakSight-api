@@ -8,7 +8,7 @@ namespace Api.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("source")]
+    [Route("api/source")]
     public class SourceController : ControllerBase
     {
         private ISourceService sourceService;
@@ -19,7 +19,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        [Route("api/electronic")]
+        [Route("electronic")]
         [AllowAnonymous]
         public async Task<IActionResult> CreateElectronicSource(ElectronicSource source)
         {
@@ -28,7 +28,7 @@ namespace Api.Controllers
         }
        
         [HttpPost]
-        [Route("api/book")]
+        [Route("book")]
         [AllowAnonymous]
         public async Task<IActionResult> CreateBookSource(BookSource source)
         {
@@ -37,9 +37,27 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        [Route("api/periodical")]
+        [Route("periodical")]
         [AllowAnonymous]
         public async Task<IActionResult> CreatePeriodicalSource(PeriodicalSource source)
+        {
+            var content = await sourceService.CreateSourceAsync(source);
+            return Ok(content);
+        }
+
+        [HttpPost]
+        [Route("dissertation")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateDissertationSource(DissertationSource source)
+        {
+            var content = await sourceService.CreateSourceAsync(source);
+            return Ok(content);
+        }
+
+        [HttpPost]
+        [Route("abstractDissertation")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CreateAbstractDissertationSource(AbstractDissertationSource source)
         {
             var content = await sourceService.CreateSourceAsync(source);
             return Ok(content);

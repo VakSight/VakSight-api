@@ -6,6 +6,7 @@
         Book,
         Periodical,
         PartOfBook,
-        Dissertation
+        Dissertation,
+        AbstractOfDissertation
     }
 }

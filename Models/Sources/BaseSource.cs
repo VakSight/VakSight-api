@@ -23,8 +23,8 @@ namespace Models.Sources
             }
             var author = Authors.First();
 
-            var firstName = !string.IsNullOrEmpty(author.FirstName) ? $"{author.FirstName} " : string.Empty;
-            var fathersName = !string.IsNullOrEmpty(author.FathersName) ? $"{author.FathersName}" : string.Empty;
+            var firstName = !string.IsNullOrEmpty(author.FirstName) ? $" {author.FirstName.Substring(0, 1)}." : string.Empty;
+            var fathersName = !string.IsNullOrEmpty(author.FathersName) ? $" {author.FathersName.Substring(0, 1)}. " : string.Empty;
             var lastName = !string.IsNullOrEmpty(author.LastName) ? $"{author.LastName}" : string.Empty;
 
             return $"{lastName}{firstName}{fathersName}";
@@ -40,8 +40,8 @@ namespace Models.Sources
             if(Authors.Count == 1)
             {
                 var author = Authors.First();
-                var firstName = !string.IsNullOrEmpty(author.FirstName) ? $"{author.FirstName} " : string.Empty;
-                var fathersName = !string.IsNullOrEmpty(author.FathersName) ? $"{author.FathersName}" : string.Empty;
+                var firstName = !string.IsNullOrEmpty(author.FirstName) ? $" {author.FirstName}" : string.Empty;
+                var fathersName = !string.IsNullOrEmpty(author.FathersName) ? $" {author.FathersName}" : string.Empty;
                 var lastName = !string.IsNullOrEmpty(author.LastName) ? $"{author.LastName}" : string.Empty;
 
                 return $" / {lastName}{firstName}{fathersName}";
@@ -64,7 +64,7 @@ namespace Models.Sources
         private string ConvertAuthorToString(Author author)
         {
             var firstName = !string.IsNullOrEmpty(author.FirstName) ? $"{author.FirstName.Substring(0, 1)}. " : string.Empty;
-            var fathersName = !string.IsNullOrEmpty(author.FathersName) ? $"{ author.FathersName.Substring(0, 1)}. " : string.Empty;
+            var fathersName = !string.IsNullOrEmpty(author.FathersName) ? $"{author.FathersName.Substring(0, 1)}. " : string.Empty;
             var lastName = !string.IsNullOrEmpty(author.LastName) ? author.LastName : string.Empty;
 
             return $"{firstName}{fathersName}{lastName}";

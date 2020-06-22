@@ -50,7 +50,7 @@ namespace Services
         private async Task<string> CreateElectronicSourceAsync(IBaseSource source, string userEmail = null)
         {
             var electronicSource = source as ElectronicSource;
-            var publication = electronicSource.Publication == null ? string.Empty : $" // {electronicSource.Publication}";
+            var publication = string.IsNullOrEmpty(electronicSource.Publication) ? string.Empty : $" // {electronicSource.Publication}";
             var yearOfPulication = electronicSource.YearOfPublication == null ? string.Empty : $". – {electronicSource.YearOfPublication}.";
 
             var content = $"{electronicSource.ParseAuthor()}{electronicSource.WorkName} [Електронний ресурс]{electronicSource.ParseAllAuthors()}{publication}{yearOfPulication}" +
@@ -70,10 +70,17 @@ namespace Services
         {
             var bookSource = source as BookSource;
 
-            var content = $"{bookSource.ParseAuthor()} {bookSource.WorkName} /" + 
-                $" {bookSource.ParseAllAuthors()}. – {bookSource.PlaceOfPublication}: " +
-                $"{bookSource.PublishingHouse}, {bookSource.YearOfPublication}." +
-                $" – {bookSource.NumberOfPages} c. – ({bookSource.PublishingName}). – " +
+            var workName = string.IsNullOrEmpty(bookSource.WorkName) ? string.Empty : $" {bookSource.WorkName} /";
+            var placeOfPublication = string.IsNullOrEmpty(bookSource.PlaceOfPublication) ? string.Empty : $" - {bookSource.PlaceOfPublication}";
+            var publishingHouse = string.IsNullOrEmpty(bookSource.PublishingHouse) ? string.Empty : $": {bookSource.PublishingHouse}";
+            var yearOfPublication = bookSource.YearOfPublication == null ? string.Empty : $", {bookSource.YearOfPublication}.";
+            var numberOfPages = string.IsNullOrEmpty(bookSource.NumberOfPages) ? string.Empty : $" – {bookSource.NumberOfPages} c.";
+            var publishingName = string.IsNullOrEmpty(bookSource.PublishingName) ? string.Empty : $" – ({bookSource.PublishingName}).";
+
+            var content = $"{bookSource.ParseAuthor()}{workName}" + 
+                $"{bookSource.ParseAllAuthors()}{placeOfPublication}" +
+                $"{publishingHouse}{yearOfPublication}" +
+                $"{numberOfPages}{publishingName} – " +
                 $"({bookSource.Series}; {shortPublicationTypes[bookSource.PublicationNumberType]} {bookSource.PeriodicSelectionNumber})";
 
             var newSource = new SourceRecord { Content = content, Type = bookSource.Type };
@@ -90,10 +97,10 @@ namespace Services
         {
             var periodicalSource = source as PeriodicalSource;
 
-            var publication = periodicalSource.Publication == null ? string.Empty : $" // {periodicalSource.Publication}";
+            var publication = string.IsNullOrEmpty(periodicalSource.Publication) ? string.Empty : $" // {periodicalSource.Publication}";
             var yearOfPulication = periodicalSource.YearOfPublication == null ? string.Empty : $". – {periodicalSource.YearOfPublication}.";
             var periodicSelectionNumber = periodicalSource.PeriodicSelectionNumber == null ? string.Empty : $" – №{periodicalSource.PeriodicSelectionNumber}.";
-            var pages = periodicalSource.Pages == null ? string.Empty : $" – C. {periodicalSource.Pages}.";
+            var pages = string.IsNullOrEmpty(periodicalSource.Pages) ? string.Empty : $" – C. {periodicalSource.Pages}.";
 
             var content = $"{periodicalSource.ParseAuthor()}{periodicalSource.WorkName}{periodicalSource.ParseAllAuthors()}{publication}{yearOfPulication}" +
                 $"{periodicSelectionNumber}{pages}";
@@ -113,8 +120,8 @@ namespace Services
 
             ValidateDissertationSource(dissertationSource);
 
-            var placeOfPublication = dissertationSource == null ? string.Empty : $" - {dissertationSource.PlaceOfPublication}";
-            var yearOfPublication = dissertationSource == null ? string.Empty : $", {dissertationSource.YearOfPublication}";
+            var placeOfPublication = string.IsNullOrEmpty(dissertationSource.PlaceOfPublication) ? string.Empty : $" - {dissertationSource.PlaceOfPublication}";
+            var yearOfPublication = dissertationSource.YearOfPublication == null ? string.Empty : $", {dissertationSource.YearOfPublication}";
             var numberOfPages = dissertationSource.NumberOfPages == null ? string.Empty : $". - {dissertationSource.NumberOfPages} с";
 
             var content = $"{dissertationSource.ParseAuthor()}{dissertationSource.WorkName}{dissertationSource.GetScientificDegree()}{dissertationSource.GetSpecialty()}" +

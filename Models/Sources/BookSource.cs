@@ -12,7 +12,7 @@ namespace Models.Sources
 
         public int? YearOfPublication { get; set; }
 
-        public int? NumberOfPages { get; set; }
+        public string NumberOfPages { get; set; }
 
         public string PublishingName { get; set; }
 

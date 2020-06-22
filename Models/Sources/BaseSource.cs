@@ -23,7 +23,11 @@ namespace Models.Sources
             }
             var author = Authors.First();
 
-            return $"{author?.LastName} {author.FirstName?.Substring(0, 1).ToUpper()}. {author.FathersName?.Substring(0, 1).ToUpper()}. ";
+            var firstName = !string.IsNullOrEmpty(author.LastName) ? $"{author.LastName} " : string.Empty;
+            var fathersName = !string.IsNullOrEmpty(author.FirstName) ? $"{author.FirstName} " : string.Empty;
+            var lastName = !string.IsNullOrEmpty(author.FathersName) ? author.FathersName : string.Empty;
+
+            return $"{lastName}{firstName}{fathersName}";
         }
 
         public string ParseAllAuthors()
@@ -36,7 +40,10 @@ namespace Models.Sources
             if(Authors.Count == 1)
             {
                 var author = Authors.First();
-                return $" / {author?.LastName} {author?.FirstName} {author?.FathersName}";
+                var firstName = !string.IsNullOrEmpty(author.LastName) ? $"{author.LastName} " : string.Empty;
+                var fathersName = !string.IsNullOrEmpty(author.FirstName) ? $"{author.FirstName} " : string.Empty;
+                var lastName = !string.IsNullOrEmpty(author.FathersName) ? author.FathersName : string.Empty;
+                return $" / {lastName}{firstName}{fathersName}";
             }
 
             var result = " / ";
@@ -44,13 +51,22 @@ namespace Models.Sources
             for(int i = 0; i < Authors.Count - 1; i++)
             {
                 var author = Authors[i];
-                result += $"{author.FirstName?.Substring(0, 1).ToUpper()}. {author.FathersName?.Substring(0, 1).ToUpper()}. {author.LastName}, ";
+                result += $"{ConvertAuthorToString(author)}, ";
             }
 
             var lastAuthor = Authors.Last();
-            result += $"{lastAuthor.FirstName?.Substring(0, 1).ToUpper()}. {lastAuthor.FathersName?.Substring(0, 1).ToUpper()}. {lastAuthor.LastName}";
+            result += $"{ConvertAuthorToString(lastAuthor)}";
 
             return result;
+        }
+
+        private string ConvertAuthorToString(Author author)
+        {
+            var firstName = !string.IsNullOrEmpty(author.FirstName) ? $"{author.FirstName.Substring(0, 1)}. " : string.Empty;
+            var fathersName = !string.IsNullOrEmpty(author.FathersName) ? $"{ author.FathersName.Substring(0, 1)}. " : string.Empty;
+            var lastName = !string.IsNullOrEmpty(author.LastName) ? author.LastName : string.Empty;
+
+            return $"{firstName}{fathersName}{lastName}";
         }
     }
 }

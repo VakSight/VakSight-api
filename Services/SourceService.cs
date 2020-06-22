@@ -90,7 +90,7 @@ namespace Services
         {
             var periodicalSource = source as PeriodicalSource;
 
-            var publication = periodicalSource.Publication == null ? string.Empty : $" // electronicSource.Publication";
+            var publication = periodicalSource.Publication == null ? string.Empty : $" // {periodicalSource.Publication}";
             var yearOfPulication = periodicalSource.YearOfPublication == null ? string.Empty : $". – {periodicalSource.YearOfPublication}.";
             var periodicSelectionNumber = periodicalSource.PeriodicSelectionNumber == null ? string.Empty : $" – №{periodicalSource.PeriodicSelectionNumber}.";
             var pages = periodicalSource.Pages == null ? string.Empty : $" – C. {periodicalSource.Pages}.";
